@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Archetype Diagnostic Survey</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS to replicate tastylive website style */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #ffffff;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            color: #333333;
+        }
+
+        .header {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* Aligned left */
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .header-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            text-transform: lowercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 40px 60px;
+            max-width: 100%;
+            width: 100%;
+            margin: 0;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        h1 {
+            color: #000000;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 15px;
+            margin-bottom: 40px;
+            font-weight: 500;
+            font-size: 2rem;
+            letter-spacing: -0.5px;
+        }
+
+        h2 {
+            color: #333333;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .question-block {
+            margin-bottom: 30px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px; /* Slightly rounded corners */
+            padding: 25px;
+            background-color: #ffffff;
+        }
+
+        .option label {
+            display: flex; /* Aligns radio button and text */
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 12px 15px;
+            cursor: pointer;
+            border-radius: 4px; /* Rounded options */
+            transition: background-color 0.2s;
+            color: #333333;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .option label:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Style for the text span inside the label */
+        .option label span {
+            flex-grow: 1;
+        }
+
+        /* Style change when radio is checked */
+        .option input[type="radio"]:checked + span {
+            color: #e62e2e;
+            font-weight: 500;
+        }
+        
+        /* Fallback for browsers that don't support :has() */
+        .option label:has(input:checked) {
+             background-color: #fdf6f6;
+        }
+
+        input[type="radio"] {
+            margin-right: 12px;
+            accent-color: #e62e2e;
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0; /* Prevents radio from shrinking */
+        }
+
+        button {
+            background-color: #e62e2e;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 4px; /* Rounded button */
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 30px;
+            transition: background-color 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            background-color: #d32f2f;
+        }
+
+        /* --- Results Styling --- */
+        #results {
+            margin-top: 40px;
+            padding: 40px;
+            border: 2px solid #e62e2e;
+            border-radius: 8px; /* Rounded results box */
+            background-color: #fdf6f6; /* Light red background */
+            display: none; /* Hidden until submission */
+        }
+
+        #results h2 {
+            color: #e62e2e;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            line-height: 1.4;
+        }
+
+        #results h2 span:first-child {
+             font-size: 2rem;
+             line-height: 1;
+             margin-top: -5px; /* Visual alignment for emoji */
+        }
+
+        #results h3 {
+            color: #333333;
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        #results p {
+            line-height: 1.8;
+            color: #333333;
+            margin-bottom: 15px;
+        }
+
+        #results hr {
+            border: none;
+            border-top: 1px solid #e0e0e0;
+            margin: 25px 0;
+        }
+
+        #results strong {
+            color: #000000;
+            font-weight: 500;
+        }
+
+        /* Style for links in results */
+        #results a {
+            color: #0056b3; /* Darker blue for better contrast */
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        #results a:hover {
+            text-decoration: underline;
+        }
+        
+        /* New Video List Styling */
+        .video-list {
+            margin-top: 25px;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .video-item {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            transition: box-shadow 0.2s;
+        }
+        
+        .video-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .video-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #6c757d;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        
+        .video-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #e62e2e; /* Tasty red title */
+            line-height: 1.4;
+        }
+        
+        /* Flaw text styling */
+        .video-flaw {
+            font-size: 0.9rem;
+            color: #333;
+            font-style: italic;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-logo">
+        <span>🍒</span><span>tastylive</span>
+    </div>
+</div>
+
+<div class="container">
+    <form id="quizForm">
+        <h1>The 10 Trading Archetypes Diagnostic Survey</h1>
+
+        <div class="question-block">
+            <h2>1. Time Horizon: What is your preferred holding period for a successful trade?</h2>
+            <div class="option">
+                <label><input type="radio" name="Q1" value="A" required><span> A few hours to one trading day.</span></label>
+                <label><input type="radio" name="Q1" value="B"><span> A few days to a few weeks.</span></label>
+                <label><input type="radio" name="Q1" value="C"><span> Several months to a year.</span></label>
+                <label><input type="radio" name="Q1" value="D"><span> Multiple years (5+), with minimal checking.</span></label>
+                <label><input type="radio" name="Q1" value="E"><span> I'll hold as long as the conviction is high, even if it takes years to play out.</span></label>
+            </div>
+        </div>
+
+        <div class="question-block">
+            <h2>2. Risk Capital: How much of your trading capital are you willing to put at risk on a single trade idea?</h2>
+            <div class="option">
+                <label><input type="radio" name="Q2" value="A" required><span> I aim for 1-2% maximum loss per position, following a strict formula.</span></label>
+                <label><input type="radio" name="Q2" value="B"><span> As much as needed to size the position correctly—up to 5-10%—if I believe the edge is strong.</span></label>
+                <label><input type="radio" name="Q2" value="C"><span> I use the minimum capital required, preferring defined-risk strategies (like spreads or selling premium).</span></label>
+                <label><input type="radio" name="Q2" value="D"><span> I commit a fixed, small amount of cash on a recurring basis.</span></label>
+            </div>
+        </div>
+
+        <div class="question-block">
+            <h2>3. Analysis Type: What is your primary focus when deciding to make a trade?</h2>
+            <div class="option">
+                <label><input type="radio" name="Q3" value="A" required><span> Macroeconomic trends, central bank policy, and global political shifts.</span></label>
+                <label><input type="radio" name="Q3" value="B"><span> Reading charts, technical indicators (like RSI/MACD), and pure price action.</span></label>
+                <label><input type="radio" name="Q3" value="C"><span> Deep-dive valuation, balance sheets, and identifying a massive mispricing in an asset.</span></label>
+                <label><input type="radio" name="Q3" value="D"><span> The emergence of a groundbreaking, disruptive technology or sector theme.</span></label>
+                <label><input type="radio" name="Q3" value="E"><span> Buzz on social media, high-volume options activity, or a stock trending in the news.</span></label>
+            </div>
+        </div>
+
+        <div class="question-block">
+            <h2>4. Primary Goal: What is the main reason you trade/invest?</h2>
+            <div class="option">
+                <label><input type="radio" name="Q4" value="A" required><span> To consistently generate monthly or quarterly cash flow (premium/dividends).</span></label>
+                <label><input type="radio" name="Q4" value="B"><span> To achieve generational wealth and exponential portfolio growth, regardless of short-term drawdowns.</span></label>
+                <label><input type="radio" name="Q4" value="C"><span> To keep pace with the market and achieve my long-term financial goals with minimum effort.</span></label>
+                <label><input type="radio" name="Q4" value="D"><span> To prove an aggressive, often contrarian thesis is correct and capture a massive, quick gain.</span></label>
+            </div>
+        </div>
+
+        <div class="question-block">
+            <h2>5. Emotion and Discipline: How do you react to a trade moving 20% against you shortly after you put it on?</h2>
+            <div class="option">
+                <label><input type="radio" name="Q5" value="A" required><span> Panic sets in; I might close the trade, take the loss, and step away from the screen.</span></label>
+                <label><input type="radio" name="Q5" value="B"><span> I immediately check my original thesis. If the thesis is sound, I consider adding to the position.</span></label>
+                <label><input type="radio" name="Q5" value="C"><span> I am indifferent, as my stop-loss order dictates the exit, not my emotion.</span></label>
+                <label><input type="radio" name="Q5" value="D"><span> I remind myself that volatility is the cost of admission and continue to hold the position.</span></label>
+            </div>
+        </div>
+
+        <div class="question-block">
+            <h2>6. Strategy Preference: Which trade strategy appeals most to you?</h2>
+            <div class="option">
+                <label><input type="radio" name="Q6" value="A" required><span> The Iron Condor/Credit Spread (defining risk to collect premium).</span></label>
+                <label><input type="radio" name="Q6" value="B"><span> Buying a call/put option (using leverage for maximum directional gain).</span></label>
+                <label><input type="radio" name="Q6" value="C"><span> Buying a stock or ETF and holding it for the long run.</span></label>
+                <label><input type="radio" name="Q6" value="D"><span> Selling one asset and buying a related one (an "arbitrage" or relative value trade).</span></label>
+            </div>
+        </div>
+
+        <div class="question-block">
+            <h2>7. Information Source: Which type of market information do you find most compelling?</h2>
+            <div class="option">
+                <label><input type="radio" name="Q7" value="A" required><span> An academic paper or deep-dive research report on a macro theme.</span></label>
+                <label><input type="radio" name="Q7" value="B"><span> Proprietary quantitative signals generated by a computer model.</span></label>
+                <label><input type="radio" name="Q7" value="C"><span> Insight from a respected financial personality or community leader.</span></label>
+                <label><input type="radio" name="Q7" value="D"><span> The news headline showing a company just secured a new patent or contract.</span></label>
+            </div>
+        </div>
+
+        <div class="question-block">
+            <h2>8. Handling Success: If a trade is up 100% in a week, what do you do?</h2>
+            <div class="option">
+                <label><input type="radio" name="Q8" value="A" required><span> Take all profits immediately; a gain is a gain.</span></label>
+                <label><input type="radio" name="Q8" value="B"><span> Sell half the position and move my stop-loss to break-even.</span></label>
+                <label><input type="radio" name="Q8" value="C"><span> Hold on, expecting the momentum to carry it much higher.</span></label>
+                <label><input type="radio" name="Q8" value="D"><span> It depends on my written trade plan—I follow the plan exactly.</span></label>
+            </div>
+        </div>
+
+        <div class="question-block">
+            <h2>9. Market Environment: Which market condition do you believe offers the best opportunities?</h2>
+            <div class="option">
+                <label><input type="radio" name="Q9" value="A" required><span> Extreme panic and fear (e.g., a major crash or geopolitical crisis).</span></label>
+                <label><input type="radio" name="Q9" value="B"><span> A long, grinding bull market with low volatility.</span></label>
+                <label><input type="radio" name="Q9" value="C"><span> A market focused on a few high-growth, innovative companies (e.g., 1999, 2020).</span></label>
+                <label><input type="radio" name="Q9" value="D"><span> Markets exhibiting clear, strong, and persistent trends.</span></label>
+            </div>
+        </div>
+
+        <div class="question-block">
+            <h2>10. The Flaw: Which of the following describes your biggest mental struggle in trading?</h2>
+            <div class="option">
+                <label><input type="radio" name="Q10" value="A" required><span> I tend to over-analyze a trade, leading to "Analysis Paralysis."</span></label>
+                <label><input type="radio" name="Q10" value="B"><span> I sometimes rely too much on "social noise" or unverified hype.</span></label>
+                <label><input type="radio" name="Q10" value="C"><span> I find it hard to hold capital for a long time—I need to see action.</span></label>
+                <label><input type="radio" name="Q10" value="D"><span> I struggle to take a loss and sometimes let a trade run too far against me.</span></label>
+                <label><input type="radio" name="Q10" value="E"><span> I am afraid of missing the next big thing and jump into ideas that don't fit my plan.</span></label>
+                <label><input type="radio" name="Q10" value="F"><span> I am happy with a slow, steady return and may miss out on bigger gains.</span></label>
+                <label><input type="radio" name="Q10" value="G"><span> I take too much leverage on my best ideas.</span></label>
+                <label><input type="radio" name="Q10" value="H"><span> I get frustrated when a broker or platform limits my ability to execute my desired trade.</span></label>
+                <label><input type="radio" name="Q10" value="I"><span> I put money into deep-value or illiquid positions, making it hard to take profits when I want to.</span></label>
+                <label><input type="radio" name="Q10" value="J"><span> I worry about having too much risk in one asset and tend to over-diversify.</span></label>
+            </div>
+        </div>
+
+        <button type="submit">Reveal Your Trading Archetype</button>
+    </form>
+
+    <div id="results">
+        </div>
+
+</div>
+
+<script>
+    // ----------------------------------------------------------------
+    // JAVASCRIPT LOGIC
+    // ----------------------------------------------------------------
+
+    // 1. SCORING MATRIX (WEIGHTED/PROGRAMMABLE)
+    // Points are assigned to archetypes (Short Codes) for each answer.
+    const SCORE_MATRIX = {
+        'Q1': {
+            'A': { 'DO': 3, 'GH': 5, 'SQ': 1, 'CI': 2 },
+            'B': { 'SQ': 5, 'PA': 3, 'RS': 4, 'ME': 5, 'SA': 1, 'YS': 2 },
+            'C': { 'YS': 5, 'PA': 5, 'RS': 5, 'F': 1, 'SA': 3 },
+            'D': { 'SA': 5, 'PA': 4 },
+            'E': { 'F': 5, 'SA': 2 },
+        },
+        'Q2': {
+            'A': { 'SQ': 5, 'PA': 4, 'YS': 2, 'SA': 2, 'RS': 3 },
+            'B': { 'GH': 5, 'DO': 4, 'F': 3, 'ME': 2, 'CI': 1 },
+            'C': { 'YS': 5, 'SQ': 3, 'PA': 3 },
+            'D': { 'SA': 5 },
+        },
+        'Q3': {
+            'A': { 'RS': 5, 'DO': 5, 'PA': 3, 'F': 2 },
+            'B': { 'SQ': 5, 'GH': 4, 'ME': 2, 'CI': 1, 'YS': 1 },
+            'C': { 'F': 5, 'PA': 4, 'SA': 2 },
+            'D': { 'ME': 5, 'GH': 1, 'SA': 1 },
+            'E': { 'CI': 5 },
+        },
+        'Q4': {
+            'A': { 'YS': 5, 'PA': 4, 'SQ': 1 },
+            'B': { 'ME': 5, 'GH': 4 },
+            'C': { 'SA': 5 },
+            'D': { 'F': 5, 'DO': 5, 'RS': 2 },
+        },
+        'Q5': {
+            'A': { 'CI': 5, 'GH': 3 },
+            'B': { 'F': 5, 'RS': 4, 'DO': 3 },
+            'C': { 'SQ': 5, 'PA': 4, 'YS': 1 },
+            'D': { 'SA': 5, 'ME': 3, 'YS': 2 },
+        },
+        'Q6': {
+            'A': { 'YS': 5, 'PA': 4, 'SQ': 3 },
+            'B': { 'GH': 5, 'DO': 4, 'ME': 3, 'CI': 2 },
+            'C': { 'SA': 5, 'F': 3 },
+            'D': { 'RS': 5, 'SQ': 4, 'PA': 1 },
+        },
+        'Q7': {
+            'A': { 'RS': 5, 'F': 4, 'DO': 3, 'PA': 2 },
+            'B': { 'SQ': 5 },
+            'C': { 'CI': 5, 'ME': 3 },
+            'D': { 'GH': 5, 'DO': 3 },
+        },
+        'Q8': {
+            'A': { 'CI': 5, 'YS': 4, 'DO': 2 },
+            'B': { 'PA': 5, 'SQ': 4 },
+            'C': { 'ME': 5, 'GH': 4, 'CI': 3 },
+            'D': { 'RS': 5 },
+        },
+        'Q9': {
+            'A': { 'DO': 5, 'F': 4, 'RS': 3 },
+            'B': { 'SA': 5, 'YS': 4, 'PA': 3 },
+            'C': { 'ME': 5, 'GH': 3, 'CI': 1 },
+            'D': { 'SQ': 5, 'RS': 3 },
+        },
+        'Q10': {
+            'A': { 'SQ': 5 },
+            'B': { 'CI': 5 },
+            'C': { 'YS': 5 },
+            'D': { 'GH': 5 },
+            'E': { 'ME': 5 },
+            'F': { 'SA': 5 },
+            'G': { 'DO': 5 },
+            'H': { 'RS': 5 },
+            'I': { 'F': 5 },
+            'J': { 'PA': 5 },
+        }
+    };
+
+    // 2. ARCHETYPE DETAILS (For final display)
+    // This is the core data from the Content Strategy Report's tables.
+    // Video links are placeholders; replace with actual tasty URLs.
+    const ARCHETYPE_DETAILS = {
+        'ME': { // A1
+            name: "The Market Explorer",
+            famed_trader: "Cathie Wood",
+            bio_link: "https://www.ark-invest.com/our-team?show_author=252",
+            flaw_text: "Fear of Complexity (Intimidation/Information Constraint)",
+            video1_title: "Defining Risk: Calculating Probability Out-of-the-Money (OTM) for Beginners",
+            video1_link: "https://www.tastylive.com/learn",
+            video2_title: "Market Movers: What's Driving Futures Volume Today?",
+            video2_link: "https://www.tastylive.com/shows",
+            video3_title: "Stop Feeling Intimidated: A Simplified Options Vocabulary Guide",
+            video3_link: "https://www.tastylive.com/learn/options",
+            icon: '🚀'
+        },
+        'SQ': { // A2
+            name: "The Systematic Quant",
+            famed_trader: "Jim Simons",
+            bio_link: "https://www.investopedia.com/articles/investing/030516/jim-simons-success-story-net-worth-education-top-quotes.asp",
+            flaw_text: "Analysis Paralysis (Over-Optimization/Inaction)",
+            video1_title: "Mechanics of the High-Probability Iron Condor Strategy: A Data-Driven Approach",
+            video1_link: "https://www.tastylive.com/learn/iron-condors",
+            video2_title: "Reviewing the Latest R&D Paper on Volatility Skew and its Impact on Defined Risk",
+            video2_link: "https://www.tastylive.com/shows/market-measures",
+            video3_title: "Overcoming Analysis Paralysis: When to Trust the Numbers and Hit Send",
+            video3_link: "https://www.tastylive.com/learn/trade-management",
+            icon: '⚙️'
+        },
+        'YS': { // A3
+            name: "The Yield Seeker",
+            famed_trader: "Warren Buffett",
+            bio_link: "https://www.forbes.com/profile/warren-buffett/",
+            flaw_text: "Capital Constraint (Over-Leverage/PDT exposure)",
+            video1_title: "Maximizing Premium Capture: Running a Small Account Credit Spread Strategy",
+            video1_link: "https://www.tastylive.com/learn/credit-spreads",
+            video2_title: "The Cost Advantage: How $0-to-Close Trades Boost Small Account ROI",
+            video2_link: "https://www.tastylive.com/learn",
+            video3_title: "The Micro-Future Solution: Trading Around the PDT Rule Legally",
+            video3_link: "https://www.tastylive.com/learn/futures",
+            icon: '💰'
+        },
+        'SA': { // A4
+            name: "The Steady Accumulator",
+            famed_trader: "John Bogle",
+            bio_link: "https://johncbogle.com/wordpress/about/",
+            flaw_text: "Poor Trade Management (Complacency in adjusting/rolling)",
+            video1_title: "Weaponizing Cost-Efficiency: Optimizing the Free Closing of Options Positions",
+            video1_link: "https://www.tastylive.com/learn",
+            video2_title: "Using Macro Economics to Spot High-Volatility Opportunities for Premium Selling",
+            video2_link: "https://www.tastylive.com/shows/macro-money",
+            video3_title: "Don't Be Complacent: Timely Roll/Adjustment Strategies for Strangles",
+            video3_link: "https://www.tastylive.com/learn/trade-management",
+            icon: '📈'
+        },
+        'CI': { // A5
+            name: "The Community Investor",
+            famed_trader: "Roaring Kitty (Keith Gill)",
+            bio_link: "https://www.brewmarkets.com/stories/2024/06/03/keith-gill-roaring-kitty-gamestop-amc-meme-stock",
+            flaw_text: "Reliance on Noise (Unverified Information/Gambler's Mentality)",
+            video1_title: "Sentiment Analysis: How to Filter Unbiased Data for Quick Trades",
+            video1_link: "https://www.tastylive.com/shows/tastytrade-financial-network",
+            video2_title: "Understanding the News Cycle: Separating Market Noise from Actionable Events",
+            video2_link: "https://www.tastylive.com/shows/market-measures",
+            video3_title: "Countering the Gambler's Mentality: Why Position Sizing Matters More Than the Bet",
+            video3_link: "https://www.tastylive.com/learn/position-sizing",
+            icon: '📊'
+        },
+        'GH': { // A6
+            name: "The Growth Hunter",
+            famed_trader: "Bill Ackman",
+            bio_link: "https://www.britannica.com/money/Bill-Ackman",
+            flaw_text: "Unmanaged Directional Risk (Single-Stock Exposure)",
+            video1_title: "Maximizing Upside with High-Delta Options: Structuring Long Vertical Spreads",
+            video1_link: "https://www.tastylive.com/learn/debit-spreads",
+            video2_title: "Using Implied Volatility to Select High-Potential Stocks and Earnings Plays",
+            video2_link: "https://www.tastylive.com/learn/implied-volatility",
+            video3_title: "The Discipline of Taking Small Losses: Managing High-Delta Directional Exposure",
+            video3_link: "https://www.tastylive.com/learn/trade-management",
+            icon: '🎯'
+        },
+        'DO': { // A7 - Note: Document links DO to Burry, not Soros
+            name: "The Dynamic Opportunist",
+            famed_trader: "Michael Burry",
+            bio_link: "https://verifiedinvesting.com/blogs/education/michael-burry-the-big-short-visionary-who-saw-the-crisis-coming?srsltid=AfmBOops_nHgYNdkVuokPivJRIFhCGo0oHplTNzRtlypctlnMoregW7f",
+            flaw_text: "Over-trading (High Transaction Cost/Execution Fatigue)",
+            video1_title: "Best Strategy for 0 DTE: Deploying Low-Risk Butterfly Spreads",
+            video1_link: "https://www.tastylive.com/concepts-strategies/zero-days-0dte-options-explained",
+            video2_title: "From Theory to Practice: Assessing Probability at 0 DTE Trade Entry",
+            video2_link: "https://www.tastylive.com/shows/from-theory-to-practice",
+            video3_title: "Efficiency Over Frequency: When High-Volume Trading Becomes Sub-Optimal",
+            video3_link: "https://www.tastylive.com/shows/tastytrade-financial-network",
+            icon: '⚡'
+        },
+        'RS': { // A8
+            name: "The Resourceful Strategist",
+            famed_trader: "Stanley Druckenmiller",
+            bio_link: "https://www.forbes.com/profile/stanley-druckenmiller/",
+            flaw_text: "Regulatory Constraint (Need for Instant Action/PDT frustration)",
+            video1_title: "Futures as the Great Equalizer: Trading High-Volume Products with Low Capital",
+            video1_link: "https://www.tastylive.com/learn/futures",
+            video2_title: "Comparing Margin Requirements: Futures vs. Portfolio Margin for Scalability",
+            video2_link: "https://www.tastylive.com/learn/margin",
+            video3_title: "Unlocking Complex Products: A Step-by-Step Guide to Platform Options Approval",
+            video3_link: "https://www.tastylive.com/learn",
+            icon: '🌍'
+        },
+        'F': { // A9 - Note: Document links Fundamentalist to Graham, not Burry
+            name: "The Fundamentalist",
+            famed_trader: "Benjamin Graham",
+            bio_link: "https://www.investopedia.com/terms/b/bengraham.asp",
+            flaw_text: "Inefficiency (Information Overload/Time Waste)",
+            video1_title: "Advanced Screening: Using Proprietary Tools to Identify High-Value Stock Setups",
+            video1_link: "https://www.tastylive.com/technology",
+            video2_title: "AI Integration: How Traders Use ChatGPT to Process Complex Documents (10-Ks)",
+            video2_link: "https://www.tastylive.com/shows/tastytrade-financial-network",
+            video3_title: "Efficiency in Analysis: Cutting Time Waste by Focusing on Key Metrics",
+            video3_link: "https://www.tastylive.com/learn/fundamental-analysis",
+            icon: '🔍'
+        },
+        'PA': { // A10
+            name: "The Portfolio Architect",
+            famed_trader: "Howard Marks",
+            bio_link: "https://www.oaktreecapital.com/about/leadership/bio/howard-marks",
+            flaw_text: "Low Velocity (Underutilization of Capital)",
+            video1_title: "Portfolio Beta Hedging: Advanced Techniques for Managing Systemic Risk",
+            video1_link: "https://www.tastylive.com/learn/beta-weighting",
+            video2_title: "The True Power of Margin: Leveraging Capital for Portfolio Expansion",
+            video2_link: "https://www.tastylive.com/learn/margin",
+            video3_title: "Putting Capital to Work: Strategies for Avoiding Underutilization in a Low-Vol Environment",
+            video3_link: "https://www.tastylive.com/learn/using-volatility",
+            icon: '⚖️'
+        }
+    };
+
+    const form = document.getElementById('quizForm');
+    const resultsDiv = document.getElementById('results');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        calculateArchetype();
+    });
+
+    function calculateArchetype() {
+        // 1. Initialize all archetype scores
+        const archetypeScores = {
+            'SA': 0, 'YS': 0, 'SQ': 0, 'PA': 0, 'F': 0, 
+            'RS': 0, 'DO': 0, 'GH': 0, 'ME': 0, 'CI': 0
+        };
+
+        const questions = ['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10'];
+        let allAnswered = true;
+
+        // 2. Iterate through all questions
+        questions.forEach(qKey => {
+            const selectedOption = document.querySelector(`input[name="${qKey}"]:checked`);
+            
+            // Check if all questions are answered
+            if (!selectedOption) {
+                allAnswered = false;
+                return; // skip to next iteration
+            }
+            
+            const answerValue = selectedOption.value;
+            const scoringWeights = SCORE_MATRIX[qKey][answerValue];
+
+            // 3. Apply the weighted points to the running total for all affected archetypes
+            for (const [archetypeCode, points] of Object.entries(scoringWeights)) {
+                archetypeScores[archetypeCode] += points;
+            }
+        });
+        
+        if (!allAnswered) {
+            alert("Please answer all 10 questions before submitting.");
+            return;
+        }
+
+        // 4. Determine the highest score and the winning archetype(s)
+        let maxScore = -1;
+        let winningArchetypes = [];
+
+        for (const [code, score] of Object.entries(archetypeScores)) {
+            if (score > maxScore) {
+                maxScore = score;
+                winningArchetypes = [code]; // New max score, reset winner list
+            } else if (score === maxScore) {
+                winningArchetypes.push(code); // Tie
+            }
+        }
+
+        // 5. Generate and display the final result
+        displayResult(winningArchetypes, maxScore);
+    }
+
+    function displayResult(winningCodes, maxScore) {
+        let resultHTML = '';
+        
+        if (winningCodes.length === 1) {
+            // Single Winner
+            const code = winningCodes[0];
+            const details = ARCHETYPE_DETAILS[code];
+            
+            resultHTML = `
+                <h2>
+                    <span>${details.icon}</span>
+                    <span>Your Unique Trading Archetype is: <br> ${details.name}</span>
+                </h2>
+                <p>Your weighted score for this archetype was: <strong>${maxScore} points</strong></p>
+                <p>
+                    <strong>Associated Mindset:</strong> 
+                    <a href="${details.bio_link}" target="_blank" rel="noopener noreferrer">Learn about ${details.famed_trader}</a>
+                </p>
+                <hr>
+                <h3>Your Personalized Learning Path:</h3>
+                <p>Here are the 3 recommended videos to build on your strengths and address your unique challenges, based on the Content Strategy Report.</p>
+                
+                <ul class="video-list">
+                    <li class="video-item">
+                        <span class="video-label">1. Build on Strengths (Validation)</span>
+                        <a href="${details.video1_link}" target="_blank" rel="noopener noreferrer" class="video-title">${details.video1_title}</a>
+                    </li>
+                    <li class="video-item">
+                        <span class="video-label">2. Neutral/Relevant Insight (Foundation)</span>
+                        <a href="${details.video2_link}" target="_blank" rel="noopener noreferrer" class="video-title">${details.video2_title}</a>
+                    </li>
+                    <li class="video-item">
+                        <span class="video-label">3. Address Natural Weakness (Remediation)</span>
+                        <a href="${details.video3_link}" target="_blank" rel="noopener noreferrer" class="video-title">${details.video3_title}</a>
+                        <div class="video-flaw"><strong>Flaw Addressed:</strong> ${details.flaw_text}</div>
+                    </li>
+                </ul>
+            `;
+        } else {
+            // Tie Scenario
+            const names = winningCodes.map(code => {
+                const details = ARCHETYPE_DETAILS[code];
+                return `${details.icon} ${details.name}`;
+            });
+            
+            resultHTML = `
+                <h2 style="color: #e62e2e;">⚠️ It's a Tie! Your Dominant Archetypes:</h2>
+                <p>You scored <strong>${maxScore} points</strong> for the following dominant archetypes:</p>
+                <ul style="color: #333; font-weight: bold; list-style-type: none; padding-left: 0;">
+                    ${names.map(name => `<li style="margin-bottom: 10px; font-size: 1.1rem;">${name}</li>`).join('')}
+                </ul>
+                <p>This suggests your trading personality is a **hybrid** of these approaches. You should focus on strategies that blend the core principles of both.</p>
+            `;
+        }
+        
+        resultsDiv.innerHTML = resultHTML;
+        resultsDiv.style.display = 'block';
+        
+        // Scroll to results
+        resultsDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
